@@ -12,11 +12,11 @@
 	"homepage": "https://github.com/TheDummi/xernerx-database#readme",
 	"packageManager": "npm@8.5.5",
 	"scripts": {
-		"checks": "npm i && npm fund && npm audit fix --force &&  npm link && tsc -w",
+		"start": "npm i && npm fund && npm audit fix --force &&  npm link && tsc -w",
 		"patch": "git add . && npm run commit && npm version patch && npm publish && git push",
 		"minor": "git add . && npm run commit && npm version minor && npm publish && git push",
 		"major": "git add . && npm run commit && npm version major && npm publish && git push",
-		"commit": "node ../scripts/commit.js"
+		"commit": "node ../../.scripts/commit.js"
 	},
 	"repository": {
 		"type": "git",

@@ -1,68 +1,44 @@
-import XernerxExtensionBuilder from 'xernerx-extension-builder';
-import Database from './models/Database.js';
 import Sequelize from 'sequelize';
+import XernerxExtensionBuilder from 'xernerx-extension-builder';
 
-interface Client {
-	database: { [index: string]: unknown };
-}
-
-interface Options {
-	options: {
-		directory: string;
-	};
-	databases: Array<any>;
-}
-
+import { Client, Options } from './interfaces.js';
+import DatabaseBuilder from './build/DatabaseBuilder.js';
+import * as fs from 'fs';
+import * as path from 'path';
 export default class XernerxDatabase extends XernerxExtensionBuilder {
-	client: Client;
-	options: any;
-	databases: Array<any>;
+	private client;
+	public options;
 
 	constructor(client: Client, options: Options) {
 		super('XernerxDatabase');
 
 		this.client = client;
 
-		this.options = options.options;
-
-		this.databases = options.databases;
-
-		this.#define();
-
-		console.log(this.client.database.users);
-	}
-
-	#define() {
 		this.client.database = {};
 
-		Object.entries(this.databases).map(([name, database]) => {
-			const structure = this.#typeCheck(database);
+		this.options = options;
 
-			this.client.database[name] = new Database({
-				name,
-				storage: this.options.directory,
-				structure,
-			});
-
-			this.#sync(name);
-		});
+		this.load();
 	}
 
-	#sync(name: string) {
-		(this.client.database[name] as Record<string, Function>).sync();
-	}
+	private async load() {
+		const directory = path.resolve(this.options.builder);
+		const files = fs.readdirSync(directory);
 
-	#typeCheck(structure: any): any {
-		let struct: any = {};
+		for (const file of files) {
+			try {
+				let database = await import('file://' + directory + '/' + file);
 
-		Object.entries(structure).map(([key, value]) => {
-			if (Array.isArray(value)) return (struct[key] = Sequelize.STRING);
-			else if (typeof value === 'object') return (struct[key] = Sequelize.STRING);
-			else return (struct[key] = Sequelize[(value as string).toUpperCase() as Types]);
-		});
+				database = new (database.default || database)(this.client);
 
-		return struct;
+				const data = await database.sync();
+
+				this.client.database[database.name] = data;
+			} catch (error) {
+				console.error(error);
+			}
+		}
 	}
 }
 
-type Types = 'STRING' | 'NUMBER';
+export { DatabaseBuilder, Sequelize };
