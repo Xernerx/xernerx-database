@@ -1,0 +1,36 @@
+{
+	"name": "xernerx-database",
+	"version": "0.0.1",
+	"type": "module",
+	"description": "An extension for the xernerx framework to easily create and manage data by JSON.",
+	"main": "dist/main.js",
+	"keywords": [
+		"xernerx"
+	],
+	"author": "Dummi",
+	"license": "MIT",
+	"homepage": "https://github.com/TheDummi/xernerx-database#readme",
+	"packageManager": "npm@8.5.5",
+	"scripts": {
+		"checks": "npm i && npm fund && npm audit fix --force &&  npm link && tsc -w",
+		"patch": "git add . && npm run commit && npm version patch && npm publish && git push",
+		"minor": "git add . && npm run commit && npm version minor && npm publish && git push",
+		"major": "git add . && npm run commit && npm version major && npm publish && git push",
+		"commit": "node ../scripts/commit.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/TheDummi/xernerx-database.git"
+	},
+	"bugs": {
+		"url": "https://github.com/TheDummi/xernerx-database/issues"
+	},
+	"dependencies": {
+		"sequelize": "^6.28.0",
+		"sqlite3": "^5.1.4",
+		"xernerx-extension-builder": "^0.0.2"
+	},
+	"devDependencies": {
+		"typescript": "^4.9.4"
+	}
+}
