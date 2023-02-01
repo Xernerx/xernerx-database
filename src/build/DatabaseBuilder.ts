@@ -1,21 +1,14 @@
-import S, { Sequelize } from 'sequelize';
+import { Sequelize } from 'sequelize';
 
 export default class DatabaseBuilder {
 	public id;
 	public name;
-	private sequelize;
-	private type;
+	private sequelize: any;
 
 	constructor(id: string, options: Options) {
 		this.id = id;
 
 		this.name = options.name;
-
-		this.type = {
-			string: S.STRING,
-			number: S.NUMBER,
-			bigint: S.BIGINT,
-		};
 
 		this.sequelize = new Sequelize(options.database, options.username, options.password, {
 			host: options.host,
@@ -24,7 +17,9 @@ export default class DatabaseBuilder {
 			storage: options.storage + '/' + options.name + '.sqlite',
 		});
 
-		return this.sequelize.define(options.name, options.structure as any) as any;
+		this.sequelize = this.sequelize.define(options.name, options.structure);
+
+		return this.sequelize;
 	}
 }
 
