@@ -6,39 +6,39 @@ import DatabaseBuilder from './build/DatabaseBuilder.js';
 import * as fs from 'fs';
 import * as path from 'path';
 export default class XernerxDatabase extends XernerxExtensionBuilder {
-	private client;
-	public options;
+    client;
+    options;
 
-	constructor(client: Client, options: Options) {
-		super('XernerxDatabase');
+    constructor(client: Client, options: Options) {
+        super('XernerxDatabase');
 
-		this.client = client;
+        this.client = client;
 
-		this.client.database = {};
+        this.client.database = {};
 
-		this.options = options;
+        this.options = options;
 
-		this.load();
-	}
+        this.load();
+    }
 
-	private async load() {
-		const directory = path.resolve(this.options.builder);
-		const files = fs.readdirSync(directory);
+    async load() {
+        const directory = path.resolve(this.options.builder);
+        const files = fs.readdirSync(directory);
 
-		for (const file of files) {
-			try {
-				let database = await import('file://' + directory + '/' + file);
+        for (const file of files) {
+            try {
+                let database = await import('file://' + directory + '/' + file);
 
-				database = new (database.default || database)(this.client);
+                database = new (database.default || database)(this.client);
 
-				const data = await database.sync();
+                const data = await database.sync();
 
-				this.client.database[database.name] = data;
-			} catch (error) {
-				console.error(error);
-			}
-		}
-	}
+                this.client.database[database.name] = data;
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
 }
 
 export { DatabaseBuilder, Sequelize };
