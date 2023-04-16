@@ -25,10 +25,10 @@ export default class DatabaseBuilder {
 
 interface Options {
     name: string;
-    database: string;
-    username: string;
-    password: string;
-    host: string;
+    database: 'sqlite';
+    username: 'username' | string;
+    password: 'password' | string;
+    host: 'localhost' | string;
     logging: boolean;
     storage: string;
     structure: unknown;

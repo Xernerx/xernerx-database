@@ -1,4 +1,4 @@
-import { DatabaseBuilder } from './main.js';
+import DatabaseBuilder from './build/DatabaseBuilder.js';
 
 export interface Client {
     database: Record<string, DatabaseBuilder>;
@@ -8,5 +8,5 @@ export interface Client {
 }
 
 export interface Options {
-    builder: string;
+    directory: string;
 }
