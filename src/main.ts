@@ -1,10 +1,13 @@
-export * from 'sequelize';
+import Sequelize from 'sequelize';
 import XernerxExtensionBuilder from 'xernerx-extension-builder';
 
 import { Client, Options } from './interfaces.js';
-export * from './build/DatabaseBuilder.js';
+import DatabaseBuilder from './build/DatabaseBuilder.js';
 import * as fs from 'fs';
 import * as path from 'path';
+
+export { DatabaseBuilder, Sequelize };
+
 export default class XernerxDatabase extends XernerxExtensionBuilder {
     private declare readonly client;
 
