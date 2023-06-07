@@ -1,6 +1,6 @@
 {
     "name": "xernerx-database",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "An extension for the xernerx framework to easily create and manage data by JSON.",
     "main": "dist/main.js",
     "type": "module",
