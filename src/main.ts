@@ -23,7 +23,7 @@ export default class XernerxDatabase extends XernerxExtensionBuilder {
 
     async main() {
         const directory = path.resolve(this.options.directory as string);
-        const files = fs.readdirSync(directory);
+        const files = fs.readdirSync(directory).filter((file) => file.endsWith('.js'));
 
         for (const file of files) {
             try {
