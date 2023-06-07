@@ -30,9 +30,9 @@
         "url": "https://github.com/TheDummi/xernerx-database/issues"
     },
     "dependencies": {
-        "sequelize": "^6.31.0",
+        "sequelize": "^6.32.0",
         "sqlite3": "^5.1.6",
-        "xernerx-extension-builder": "^0.0.12"
+        "xernerx-extension-builder": "^0.0.16"
     },
     "devDependencies": {
         "prettier": "^2.8.4",
