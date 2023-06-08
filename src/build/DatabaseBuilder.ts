@@ -1,40 +1,35 @@
-import S, { Sequelize } from 'sequelize';
+import { Sequelize } from 'sequelize';
 
 export default class DatabaseBuilder {
-	public id;
-	public name;
-	private sequelize;
-	private type;
+    id;
+    name;
+    sequelize: any;
 
-	constructor(id: string, options: Options) {
-		this.id = id;
+    constructor(id: string, options: Options) {
+        this.id = id;
 
-		this.name = options.name;
+        this.name = options.name;
 
-		this.type = {
-			string: S.STRING,
-			number: S.NUMBER,
-			bigint: S.BIGINT,
-		};
+        this.sequelize = new Sequelize(options.database, options.username, options.password, {
+            host: options.host,
+            dialect: 'sqlite',
+            logging: options.logging || false,
+            storage: options.storage + '/' + options.name + '.sqlite',
+        });
 
-		this.sequelize = new Sequelize(options.database, options.username, options.password, {
-			host: options.host,
-			dialect: 'sqlite',
-			logging: options.logging || false,
-			storage: options.storage + '/' + options.name + '.sqlite',
-		});
+        this.sequelize = this.sequelize.define(options.name, options.structure);
 
-		return this.sequelize.define(options.name, options.structure as any) as any;
-	}
+        return this.sequelize;
+    }
 }
 
 interface Options {
-	name: string;
-	database: string;
-	username: string;
-	password: string;
-	host: string;
-	logging: boolean;
-	storage: string;
-	structure: unknown;
+    name: string;
+    database: 'sqlite';
+    username: 'username' | string;
+    password: 'password' | string;
+    host: 'localhost' | string;
+    logging: boolean;
+    storage: string;
+    structure: unknown;
 }
